@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class EleitorDaoJDBC implements EleitorDAO {
+public class EleitorDao implements EleitorDaoInterface {
     private static Connection connection = DB.getConnection();
 
     @Override

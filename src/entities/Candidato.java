@@ -67,7 +67,7 @@ public class Candidato {
                 "nome='" + nome + '\'' +
                 ", partido='" + partido + '\'' +
                 ", numero=" + numero +
-                ", fotoURL='" + fotoURL + '\'' +
+                ", fotoURL='" + foto + '\'' +
                 '}';
     }
 }
