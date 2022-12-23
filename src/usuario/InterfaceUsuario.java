@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 
 public class InterfaceUsuario {
@@ -18,18 +17,18 @@ public class InterfaceUsuario {
 
 
 
-    public static void exibirCandidato(Candidato candidato) {
-        JOptionPane.showOptionDialog(
-                null,
-                "ola",
-                "ola",
-                JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                candidato.getFoto(),
-                new String[]{"ok", "avancar"},
-                null
-        );
-    }
+//    public static void exibirCandidato(Candidato candidato) {
+//        JOptionPane.showOptionDialog(
+//                null,
+//                "ola",
+//                "ola",
+//                JOptionPane.DEFAULT_OPTION,
+//                JOptionPane.INFORMATION_MESSAGE,
+//                candidato.getFotoURL(),
+//                new String[]{"ok", "avancar"},
+//                null
+//        );
+//    }
 
     public static void coletarCandidato() throws SQLException, IOException {
         Connection connection = DB.getConnection();
