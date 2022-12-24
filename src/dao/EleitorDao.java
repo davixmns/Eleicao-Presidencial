@@ -3,7 +3,6 @@ package dao;
 import dao.interfaces.EleitorDaoInterface;
 import db.DB;
 import db.DBException;
-import entidades.Candidato;
 import entidades.Eleitor;
 
 import java.sql.Connection;
@@ -25,36 +24,16 @@ public class EleitorDao implements EleitorDaoInterface {
         try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "INSERT INTO eleitor(id_candidato, nome, cpf)\n" +
-                            "VALUES(?, ?, ?)"
+                            "SELECT id_candidato, ?, ? FROM candidato WHERE numero = ?"
             );
-            ps.setInt(1, getIdDoCandidato(eleitor.getCandidatoNumero()));
-            ps.setString(2, eleitor.getNome());
-            ps.setLong(3, eleitor.getCpf());
+            ps.setString(1, eleitor.getNome());
+            ps.setLong(2, eleitor.getCpf());
+            ps.setInt(3, eleitor.getCandidatoNumero());
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
-
     }
-
-    private Integer getIdDoCandidato(Integer numero) {
-        try {
-            PreparedStatement ps = this.connection.prepareStatement(
-                    "SELECT id_candidato FROM candidato WHERE numero = ?"
-            );
-            ps.setInt(1, numero);
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            return rs.getInt("id_candidato");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
 
     @Override
     public void updateById(Integer eleitorId) {
@@ -100,7 +79,7 @@ public class EleitorDao implements EleitorDaoInterface {
     public static void main(String[] args) {
         Connection c = DB.getConnection();
         EleitorDao eleitorDao = new EleitorDao(c);
-//        Eleitor eleitor = new Eleitor("davi ximenes", 63417951305L, 12);
-//        eleitorDao.insert(eleitor);
+        Eleitor eleitor = new Eleitor("luquinhas", 63417951305L, 12);
+        eleitorDao.insert(eleitor);
     }
 }
