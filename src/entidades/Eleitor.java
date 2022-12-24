@@ -2,13 +2,13 @@ package entidades;
 
 public class Eleitor {
     private String nome;
-    private Integer cpf;
-    private Candidato candidato;
+    private Long cpf;
+    private Integer candidatoNumero;
 
-    public Eleitor(String nome, Integer cpf, Candidato candidato) {
+    public Eleitor(String nome, Long cpf, Integer candidato) {
         this.nome = nome;
         this.cpf = cpf;
-        this.candidato = candidato;
+        this.candidatoNumero = candidato;
     }
 
     public String getNome() {
@@ -19,19 +19,19 @@ public class Eleitor {
         this.nome = nome;
     }
 
-    public Integer getCpf() {
+    public Long getCpf() {
         return cpf;
     }
 
-    public void setCpf(Integer cpf) {
+    public void setCpf(Long cpf) {
         this.cpf = cpf;
     }
 
-    public Candidato getCandidato() {
-        return candidato;
+    public Integer getCandidatoNumero() {
+        return candidatoNumero;
     }
 
-    public void setCandidato(Candidato candidato) {
-        this.candidato = candidato;
+    public void setCandidatoNumero(Integer candidato) {
+        this.candidatoNumero = candidato;
     }
 }
