@@ -3,6 +3,7 @@ package dao;
 import dao.interfaces.EleitorDaoInterface;
 import db.DB;
 import db.DBException;
+import entidades.Candidato;
 import entidades.Eleitor;
 
 import java.sql.Connection;
@@ -51,6 +52,12 @@ public class EleitorDao implements EleitorDaoInterface {
         }
     }
 
+    public boolean votoNulo(Integer numero){
+        CandidatoDao candidatoDao = new CandidatoDao(connection);
+        List<Candidato> candidatos = candidatoDao.findAll();
+        return candidatos.stream().noneMatch(c -> c.getNumero() == numero);
+    }
+
     @Override
     public void updateById(Integer eleitorId) {
 
@@ -71,10 +78,12 @@ public class EleitorDao implements EleitorDaoInterface {
         return null;
     }
 
+
+
     public static void main(String[] args) {
         Connection c = DB.getConnection();
         EleitorDao eleitorDao = new EleitorDao(c);
-        Eleitor eleitor = new Eleitor("davi ximenes", 63417951305L, 12);
-        eleitorDao.insert(eleitor);
+//        Eleitor eleitor = new Eleitor("davi ximenes", 63417951305L, 12);
+//        eleitorDao.insert(eleitor);
     }
 }
