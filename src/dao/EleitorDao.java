@@ -1,8 +1,9 @@
 package dao;
 
+import dao.interfaces.EleitorDaoInterface;
 import db.DB;
 import db.DBException;
-import entities.Eleitor;
+import entidades.Eleitor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +11,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class EleitorDao implements EleitorDaoInterface {
-    private static Connection connection = DB.getConnection();
+    private final Connection connection;
+
+    public EleitorDao(Connection c){
+        this.connection = c;
+    }
 
     @Override
     public void insert(Eleitor eleitor) {

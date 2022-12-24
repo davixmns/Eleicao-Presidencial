@@ -1,6 +1,6 @@
-package dao;
+package dao.interfaces;
 
-import entities.Eleitor;
+import entidades.Eleitor;
 
 import java.util.List;
 

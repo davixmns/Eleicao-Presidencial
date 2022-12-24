@@ -1,11 +1,11 @@
-package entities;
+package entidades;
 
 import javax.swing.*;
 
 public class Candidato {
     private String nome;
     private String partido;
-    private int numero;
+    private Integer numero;
     private ImageIcon foto;
     private String fotoURL;
 

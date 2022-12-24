@@ -1,6 +1,6 @@
-package dao;
+package dao.interfaces;
 
-import entities.Candidato;
+import entidades.Candidato;
 
 import java.sql.SQLException;
 import java.util.List;

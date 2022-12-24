@@ -1,4 +1,4 @@
-package usuario;
+package utilidade;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,8 +13,13 @@ public class ConversorDeImagem {
     private static final int[] medidasFoto = {130, 180, 100};
 
     public static ImageIcon formatarImagem(ImageIcon img, int w, int h, int hints){
-        img.setImage(img.getImage().getScaledInstance(w, h, hints));
-        return img;
+        try {
+            img.setImage(img.getImage().getScaledInstance(w, h, hints));
+            return img;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static byte[] converterImagemParaBytes(String url) {
@@ -24,7 +29,6 @@ public class ConversorDeImagem {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();
-
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -36,10 +40,10 @@ public class ConversorDeImagem {
             InputStream is = new java.io.ByteArrayInputStream(fotoBytes);
             BufferedImage bufImg = ImageIO.read(is);
             return formatarImagem(new ImageIcon(bufImg), medidasFoto[0], medidasFoto[1], medidasFoto[2]);
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
+
 }
