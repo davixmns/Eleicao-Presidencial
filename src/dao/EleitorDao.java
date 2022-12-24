@@ -10,18 +10,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EleitorDao implements EleitorDaoInterface {
     private final Connection connection;
 
-    public EleitorDao(Connection c){
+    public EleitorDao(Connection c) {
         this.connection = c;
     }
 
     @Override
     public void insert(Eleitor eleitor) {
-        try{
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "INSERT INTO eleitor(id_candidato, nome, cpf)\n" +
                             "VALUES(?, ?, ?)"
@@ -31,13 +32,14 @@ public class EleitorDao implements EleitorDaoInterface {
             ps.setLong(3, eleitor.getCpf());
             ps.executeUpdate();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
+
     }
 
-    private Integer getIdDoCandidato(Integer numero){
-        try{
+    private Integer getIdDoCandidato(Integer numero) {
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "SELECT id_candidato FROM candidato WHERE numero = ?"
             );
@@ -46,17 +48,13 @@ public class EleitorDao implements EleitorDaoInterface {
             rs.next();
             return rs.getInt("id_candidato");
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public boolean votoNulo(Integer numero){
-        CandidatoDao candidatoDao = new CandidatoDao(connection);
-        List<Candidato> candidatos = candidatoDao.findAll();
-        return candidatos.stream().noneMatch(c -> c.getNumero() == numero);
-    }
+
 
     @Override
     public void updateById(Integer eleitorId) {
@@ -75,9 +73,28 @@ public class EleitorDao implements EleitorDaoInterface {
 
     @Override
     public List<Eleitor> findAll() {
-        return null;
-    }
+        try{
+            List<Eleitor> eleitores = new ArrayList<>();
+            PreparedStatement ps = this.connection.prepareStatement(
+                    """
+                            SELECT c.numero, e.nome, e.cpf
+                            FROM eleitor e
+                            JOIN candidato c ON e.id_candidato = c.id_candidato"""
+            );
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                String nome = rs.getString("nome");
+                Long cpf = rs.getLong("cpf");
+                Integer numeroDoCandidato = rs.getInt("numero");
+                eleitores.add(new Eleitor(nome, cpf, numeroDoCandidato));
+            }
+            return eleitores;
 
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
     public static void main(String[] args) {
