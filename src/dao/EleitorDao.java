@@ -36,9 +36,23 @@ public class EleitorDao implements EleitorDaoInterface {
     }
 
     @Override
-    public void updateById(Integer eleitorId) {
+    public void updateById(Integer eleitorId, Eleitor eleitor) {
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE eleitor SET id_candidato = (SELECT id_candidato FROM candidato WHERE numero = ?),\n" +
+                            "nome = ?, cpf = ? WHERE id_eleitor = ?"
+            );
+            ps.setInt(1, eleitor.getCandidatoNumero());
+            ps.setString(2, eleitor.getNome());
+            ps.setLong(3, eleitor.getCpf());
+            ps.setInt(4, eleitorId);
+            ps.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     public void deleteById(Integer eleitorID) {
@@ -52,7 +66,7 @@ public class EleitorDao implements EleitorDaoInterface {
 
     @Override
     public List<Eleitor> findAll() {
-        try{
+        try {
             List<Eleitor> eleitores = new ArrayList<>();
             PreparedStatement ps = this.connection.prepareStatement(
                     """
@@ -61,7 +75,7 @@ public class EleitorDao implements EleitorDaoInterface {
                             JOIN candidato c ON e.id_candidato = c.id_candidato"""
             );
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 String nome = rs.getString("nome");
                 Long cpf = rs.getLong("cpf");
                 Integer numeroDoCandidato = rs.getInt("numero");
@@ -69,7 +83,7 @@ public class EleitorDao implements EleitorDaoInterface {
             }
             return eleitores;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
@@ -79,7 +93,7 @@ public class EleitorDao implements EleitorDaoInterface {
     public static void main(String[] args) {
         Connection c = DB.getConnection();
         EleitorDao eleitorDao = new EleitorDao(c);
-        Eleitor eleitor = new Eleitor("luquinhas", 63417951305L, 12);
-        eleitorDao.insert(eleitor);
+        Eleitor eleitor = new Eleitor("luquinhas silva", 63417951305L, 12);
+        eleitorDao.updateById(2, eleitor);
     }
 }
