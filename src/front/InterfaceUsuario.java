@@ -1,4 +1,4 @@
-package usuario;
+package front;
 
 public class InterfaceUsuario {
 //    public static void exibirCandidato(Candidato candidato) {
