@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class ConversorDeImagem {
+public class InterfaceUsuarioUtil {
     private static final int[] medidasFoto = {130, 180, 100};
 
     public static ImageIcon formatarImagem(ImageIcon img, int w, int h, int hints){

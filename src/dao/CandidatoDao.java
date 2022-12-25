@@ -3,7 +3,7 @@ package dao;
 import dao.interfaces.CandidatoDaoInterface;
 import db.DB;
 import entidades.Candidato;
-import utilidade.ConversorDeImagem;
+import utilidade.InterfaceUsuarioUtil;
 
 import javax.swing.*;
 import java.sql.*;
@@ -36,7 +36,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
             stmt.setInt(1, idPartido);
             stmt.setString(2, candidato.getNome());
             stmt.setInt(3, candidato.getNumero());
-            stmt.setBytes(4, ConversorDeImagem.converterImagemParaBytes(candidato.getFotoURL()));
+            stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
             stmt.executeUpdate();
             System.out.println(stmt.getGeneratedKeys() + " rows added");
 
@@ -58,19 +58,18 @@ public class CandidatoDao implements CandidatoDaoInterface {
             );
             stmt.setInt(1, candidatoID);
             ResultSet rs = stmt.executeQuery();
-            if (!rs.next()) {
+            if (rs.next()) {
+                String nome = rs.getString("nome");
+                String partido = rs.getString("sigla");
+                byte[] fotoBytes = rs.getBytes("foto");
+                ImageIcon foto = InterfaceUsuarioUtil.converterBlobParaImagem(fotoBytes);
+                int numero = rs.getInt("numero");
+
+                return new Candidato(nome, partido, numero, foto);
+
+            } else {
                 throw new SQLException("Candidato não encontrado no banco de dados");
             }
-            String nome = rs.getString("nome");
-            String partido = rs.getString("sigla");
-            byte[] fotoBytes = rs.getBytes("foto");
-            ImageIcon foto = ConversorDeImagem.converterBlobParaImagem(fotoBytes);
-            int numero = rs.getInt("numero");
-
-            Candidato c = new Candidato(nome, partido, numero, foto);
-            System.out.println(c);
-            return c;
-
         } catch (SQLException e) {
             System.err.println("erro ao procurar candidato");
             e.printStackTrace();
@@ -91,7 +90,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
             stmt.setInt(1, getPartidoId(candidato.getPartido()));
             stmt.setString(2, candidato.getNome());
             stmt.setInt(3, candidato.getNumero());
-            stmt.setBytes(4, ConversorDeImagem.converterImagemParaBytes(candidato.getFotoURL()));
+            stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
             stmt.setInt(5, candidatoID);
 
             stmt.executeUpdate();
@@ -143,7 +142,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
                 String partido = rs.getString("sigla");
                 int numero = rs.getInt("numero");
                 byte[] fotoBytes = rs.getBytes("foto");
-                ImageIcon foto = ConversorDeImagem.converterBlobParaImagem(fotoBytes);
+                ImageIcon foto = InterfaceUsuarioUtil.converterBlobParaImagem(fotoBytes);
                 candidatos.add(new Candidato(nome, partido, numero, foto));
             }
             return candidatos;

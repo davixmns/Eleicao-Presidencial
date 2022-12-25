@@ -56,12 +56,46 @@ public class EleitorDao implements EleitorDaoInterface {
 
     @Override
     public void deleteById(Integer eleitorID) {
+        try{
+            PreparedStatement st = this.connection.prepareStatement(
+                    "DELETE FROM eleitor WHERE id_eleitor = ?"
+            );
+            st.setInt(1, eleitorID);
+            st.executeUpdate();
 
+        } catch (SQLException e){
+            System.err.println("Erro ao deletar eleitor");
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Eleitor findById(Integer eleitorId) {
-        return null;
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    """
+                            SELECT c.numero, e.nome, e.cpf
+                            FROM eleitor e
+                            INNER JOIN candidato c
+                            ON e.id_candidato = c.id_candidato
+                            WHERE id_eleitor = ?"""
+            );
+            ps.setInt(1, eleitorId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                Integer numeroCandidato = rs.getInt("numero");
+                String nome = rs.getString("nome");
+                Long cpf = rs.getLong("cpf");
+                return new Eleitor(nome, cpf, numeroCandidato);
+
+            } else {
+                throw new DBException("Eleitor não encontrado no banco de dados");
+            }
+        }catch (SQLException e){
+            System.err.println("erro ao capturar eleitor");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -93,7 +127,9 @@ public class EleitorDao implements EleitorDaoInterface {
     public static void main(String[] args) {
         Connection c = DB.getConnection();
         EleitorDao eleitorDao = new EleitorDao(c);
-        Eleitor eleitor = new Eleitor("luquinhas silva", 63417951305L, 12);
-        eleitorDao.updateById(2, eleitor);
+
+        Eleitor eleitor = eleitorDao.findById(3);
+
+        System.out.println(eleitor);
     }
 }

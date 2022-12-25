@@ -34,4 +34,9 @@ public class Eleitor {
     public void setCandidatoNumero(Integer candidato) {
         this.candidatoNumero = candidato;
     }
+
+    @Override
+    public String toString() {
+        return nome + " " + cpf + " " +candidatoNumero;
+    }
 }
