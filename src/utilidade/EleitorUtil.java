@@ -16,4 +16,12 @@ public class EleitorUtil {
         List<Candidato> candidatos = candidatoDao.findAll();
         return candidatos.stream().noneMatch(c -> c.getNumero() == numero);
     }
+
+    public boolean cpfValido(Long cpf){
+        return cpf.toString().length() == 11;
+    }
+
+    public boolean nomeValido(String nome){
+        return nome.length() > 0;
+    }
 }

@@ -123,6 +123,23 @@ public class EleitorDao implements EleitorDaoInterface {
         }
     }
 
+    public void registrarVoto(Integer numeroDoCandidato) {
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE candidato SET votos_totais = votos_totais + 1 WHERE numero = ?"
+            );
+            ps.setInt(1, numeroDoCandidato);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DBException("Candidato não encontrado");
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao registrar voto");
+            e.printStackTrace();
+        }
+    }
+
+
 
     public static void main(String[] args) {
         Connection c = DB.getConnection();

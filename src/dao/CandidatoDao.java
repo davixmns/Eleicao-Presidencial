@@ -8,6 +8,8 @@ import utilidade.InterfaceUsuarioUtil;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CandidatoDao implements CandidatoDaoInterface {
@@ -25,18 +27,17 @@ public class CandidatoDao implements CandidatoDaoInterface {
             );
             stmt.setString(1, candidato.getPartido());
             ResultSet rs = stmt.executeQuery();
-            if (!rs.next()) {
-                throw new SQLException("Partido do candidato não encontrado no banco de dados");
-            }
+            rs.next();
             int idPartido = rs.getInt("id_partido");
             stmt = connection.prepareStatement(
-                    "INSERT INTO candidato(id_partido, nome, numero, foto)" +
-                            "VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+                    "INSERT INTO candidato(id_partido, nome, numero, foto, votos_totais)" +
+                            "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
             );
             stmt.setInt(1, idPartido);
             stmt.setString(2, candidato.getNome());
             stmt.setInt(3, candidato.getNumero());
             stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
+            stmt.setInt(5, 0);
             stmt.executeUpdate();
             System.out.println(stmt.getGeneratedKeys() + " rows added");
 
@@ -51,7 +52,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
         try {
             PreparedStatement stmt = connection.prepareStatement(
                     """
-                            SELECT c.nome, p.sigla, c.foto, numero
+                            SELECT c.nome, p.sigla, c.foto, numero, votos_totais
                             FROM candidato c
                             JOIN partido p ON c.id_partido = p.id_partido
                             WHERE c.id_partido = ?"""
@@ -64,8 +65,9 @@ public class CandidatoDao implements CandidatoDaoInterface {
                 byte[] fotoBytes = rs.getBytes("foto");
                 ImageIcon foto = InterfaceUsuarioUtil.converterBlobParaImagem(fotoBytes);
                 int numero = rs.getInt("numero");
+                Long votos = rs.getLong("votos_totais");
 
-                return new Candidato(nome, partido, numero, foto);
+                return new Candidato(nome, partido, numero, foto, votos);
 
             } else {
                 throw new SQLException("Candidato não encontrado no banco de dados");
@@ -133,7 +135,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(
                     """
-                            SELECT c.id_partido, c.nome, p.sigla, c.numero, c.foto
+                            SELECT c.id_partido, c.nome, p.sigla, c.numero, c.foto, c.votos_totais
                             FROM candidato c
                             JOIN partido p ON c.id_partido = p.id_partido"""
             );
@@ -143,7 +145,8 @@ public class CandidatoDao implements CandidatoDaoInterface {
                 int numero = rs.getInt("numero");
                 byte[] fotoBytes = rs.getBytes("foto");
                 ImageIcon foto = InterfaceUsuarioUtil.converterBlobParaImagem(fotoBytes);
-                candidatos.add(new Candidato(nome, partido, numero, foto));
+                Long votos = rs.getLong("votos_totais");
+                candidatos.add(new Candidato(nome, partido, numero, foto, votos));
             }
             return candidatos;
 
@@ -152,6 +155,21 @@ public class CandidatoDao implements CandidatoDaoInterface {
             return null;
         }
     }
+
+    public void incrementarVoto(Integer numeroCandidato){
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE candidato SET votos_totais = votos_totais + 1 WHERE numero = ?"
+            );
+            ps.setInt(1, numeroCandidato);
+            ps.executeUpdate();
+
+        }catch (SQLException e){
+            System.err.println("Erro ao adicionar voto no candidato");
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static void main(String[] args) {

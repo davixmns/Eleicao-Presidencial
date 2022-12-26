@@ -2,41 +2,34 @@ package service;
 
 import dao.CandidatoDao;
 import dao.EleitorDao;
-import entidades.Candidato;
 import entidades.Eleitor;
+import utilidade.EleitorUtil;
 
 import java.util.List;
 
 public class EleitorService {
     private final CandidatoDao candidatoDao;
     private final EleitorDao eleitorDao;
+    private final EleitorUtil eleitorUtil;
 
-    public EleitorService(EleitorDao eleitorDao, CandidatoDao candidatoDao) {
+    public EleitorService(EleitorDao eleitorDao, EleitorUtil eleitorUtil, CandidatoDao candidatoDao) {
         this.eleitorDao = eleitorDao;
         this.candidatoDao = candidatoDao;
+        this.eleitorUtil = eleitorUtil;
     }
 
     public void inserirEleitor(Eleitor eleitor) {
-        if (eleitor.getCpf().toString().length() == 11) {
-            if (!votoNulo(eleitor.getCandidatoNumero())) {
-                this.eleitorDao.insert(eleitor);
-            } else {
-                System.err.println("Voto nulo não cadastrado");
+        if (eleitorUtil.cpfValido(eleitor.getCpf())) {
+            if (!eleitorUtil.votoNulo(eleitor.getCandidatoNumero())) {
+                if(eleitorUtil.nomeValido(eleitor.getNome())){
+                    this.eleitorDao.insert(eleitor);
+                    this.candidatoDao.incrementarVoto(eleitor.getCandidatoNumero());
+                } else {
+                    throw new ServiceException("NOME INVÁLIDO");
+                }
             }
         } else {
-            System.err.println("CPF do Eleitor não tem 11 caracteres");
-        }
-    }
-
-    public void alterarEleitor(Integer eleitorID, Eleitor eleitor){
-        if (eleitor.getCpf().toString().length() == 11) {
-            if (!votoNulo(eleitor.getCandidatoNumero())) {
-                this.eleitorDao.updateById(eleitorID, eleitor);
-            } else {
-                System.err.println("Voto nulo não cadastrado");
-            }
-        } else {
-            System.err.println("CPF do Eleitor não tem 11 caracteres");
+            throw new ServiceException("CPF INVÁLIDO");
         }
     }
 
@@ -52,8 +45,5 @@ public class EleitorService {
         return this.eleitorDao.findAll();
     }
 
-    public boolean votoNulo(Integer numero) {
-        List<Candidato> candidatos = candidatoDao.findAll();
-        return candidatos.stream().noneMatch(c -> c.getNumero() == numero);
-    }
+
 }

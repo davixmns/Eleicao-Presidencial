@@ -16,7 +16,7 @@ public class CandidatoUtil {
         this.partidoDao = partidoDao;
     }
 
-    public boolean candidatoExiste(String nome) {
+    public boolean nomeDoCandidatoExiste(String nome) {
         List<Candidato> candidatos = candidatoDao.findAll();
         return candidatos.stream().anyMatch(c -> c.getNome().equals(nome));
     }
@@ -31,7 +31,7 @@ public class CandidatoUtil {
         return partidos.stream().anyMatch(p -> p.getSigla().equals(sigla));
     }
 
-    public boolean candidatoExiste(Integer numero){
+    public boolean numeroDoCandidatoExiste(Integer numero){
         List<Candidato> candidatos = candidatoDao.findAll();
 
         return candidatos.stream().anyMatch(c -> c.getNumero() == numero);

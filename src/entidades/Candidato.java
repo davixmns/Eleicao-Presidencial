@@ -8,6 +8,7 @@ public class Candidato {
     private Integer numero;
     private ImageIcon foto;
     private String fotoURL;
+    private Long votos = 0L;
 
     public Candidato(String nome, String partido, int numero) {
         this.nome = nome;
@@ -15,11 +16,12 @@ public class Candidato {
         this.numero = numero;
     }
 
-    public Candidato(String nome, String partido, int numero, ImageIcon foto) {
+    public Candidato(String nome, String partido, int numero, ImageIcon foto, Long votos) {
         this.nome = nome;
         this.partido = partido;
         this.numero = numero;
         this.foto = foto;
+        this.votos = votos;
     }
 
     public Candidato(String nome, String partido, int numero, String fotoURL) {
@@ -69,5 +71,29 @@ public class Candidato {
                 ", numero=" + numero +
                 ", fotoURL='" + foto + '\'' +
                 '}';
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public ImageIcon getFoto() {
+        return foto;
+    }
+
+    public void setFoto(ImageIcon foto) {
+        this.foto = foto;
+    }
+
+    public void setFotoURL(String fotoURL) {
+        this.fotoURL = fotoURL;
+    }
+
+    public Long getVotos() {
+        return votos;
+    }
+
+    public void setVotos(Long votos) {
+        this.votos = votos;
     }
 }

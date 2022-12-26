@@ -2,24 +2,16 @@ package utilidade;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 
 public class InterfaceUsuarioUtil {
-    private static final int[] medidasFoto = {130, 180, 100};
-
-    public static ImageIcon formatarImagem(ImageIcon img, int w, int h, int hints){
-        try {
-            img.setImage(img.getImage().getScaledInstance(w, h, hints));
-            return img;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static ImageIcon formatarFoto(ImageIcon foto, int compr, int altura) {
+        Image imagem = foto.getImage();
+        Image novaImagem = imagem.getScaledInstance(compr, altura, Image.SCALE_SMOOTH);
+        return new ImageIcon(novaImagem);
     }
 
     public static byte[] converterImagemParaBytes(String url) {
@@ -37,9 +29,9 @@ public class InterfaceUsuarioUtil {
 
     public static ImageIcon converterBlobParaImagem(byte[] fotoBytes) {
         try {
-            InputStream is = new java.io.ByteArrayInputStream(fotoBytes);
+            InputStream is = new ByteArrayInputStream(fotoBytes);
             BufferedImage bufImg = ImageIO.read(is);
-            return formatarImagem(new ImageIcon(bufImg), medidasFoto[0], medidasFoto[1], medidasFoto[2]);
+            return new ImageIcon(bufImg);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
