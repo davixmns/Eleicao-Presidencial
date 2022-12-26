@@ -69,10 +69,13 @@ public class App {
                     interfaceUsuario.exibirMensagemDeErro("Campos invalidos");
                 }
 
-
             } else if (opcaoEscolhida == 1) {
                 interfaceUsuario.exibirResultado();
-            } else {
+
+            } else if(opcaoEscolhida == 2){
+
+
+            }else {
                 DB.closeConnection();
                 chave = false;
             }

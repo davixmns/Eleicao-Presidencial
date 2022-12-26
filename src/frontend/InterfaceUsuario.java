@@ -26,7 +26,7 @@ public class InterfaceUsuario {
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.PLAIN_MESSAGE,
                 brasao,
-                new String[]{"VOTAR", "RESULTADO", "SAIR"},
+                new String[]{"VOTAR", "RESULTADO", "MAIS", "SAIR"},
                 null
         );
         AudioPlayer.tocarSom(AudioPlayer.confirma);
@@ -109,5 +109,25 @@ public class InterfaceUsuario {
         );
         AudioPlayer.tocarSom(AudioPlayer.confirma);
         return n;
+    }
+
+    public Integer exibirAlterarDados(){
+        Integer n = JOptionPane.showOptionDialog(
+                null,
+                "Tela de alteração de dados\n" +
+                        "Selecione o que deseja alterar.",
+                "Aviso",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"CANDIDATO", "ELEITOR", "PARTIDO", "Voltar"},
+                null
+        );
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
+    }
+
+    public void exibirOpcoesDeAlteracaoDeCandidato(){
+
     }
 }
