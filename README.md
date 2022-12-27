@@ -1,4 +1,4 @@
-<h1>Urna Eletrônica 🗳️</h1>
+<h1>Eleição Presidencial 🗳️</h1>
 
 <h2>Resumo 🗿</h2>
 Este é um projeto de urna eletrônica com Java utilizando 
