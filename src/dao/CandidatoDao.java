@@ -1,15 +1,12 @@
 package dao;
 
 import dao.interfaces.CandidatoDaoInterface;
-import db.DB;
 import entidades.Candidato;
 import utilidade.InterfaceUsuarioUtil;
 
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class CandidatoDao implements CandidatoDaoInterface {
@@ -38,10 +35,9 @@ public class CandidatoDao implements CandidatoDaoInterface {
             stmt.setInt(3, candidato.getNumero());
             stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
             stmt.setInt(5, 0);
-            stmt.close();
-
             stmt.executeUpdate();
             System.out.println(stmt.getGeneratedKeys() + " rows added");
+            stmt.close();
 
         } catch (SQLException e) {
             System.err.println("erro ao inserir candidato");
@@ -110,7 +106,9 @@ public class CandidatoDao implements CandidatoDaoInterface {
             stmt.setString(1, sigla);
             ResultSet rs = stmt.executeQuery();
             rs.next();
-            return rs.getInt("id_partido");
+            Integer idpartido = rs.getInt("id_partido");
+            stmt.close();
+            return idpartido;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,17 +117,35 @@ public class CandidatoDao implements CandidatoDaoInterface {
     }
 
     @Override
-    public void deleteById(Integer candidatoID) { //OK
+    public void deleteById(Integer candidatoNumero) {
         try {
-            PreparedStatement stmt = connection.prepareStatement("DELETE FROM candidato WHERE id_candidato = ?");
-            stmt.setInt(1, candidatoID);
-            stmt.executeUpdate();
-            stmt.close();
+            deletarEleitoresDeCandidato(candidatoNumero);
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "DELETE FROM candidato WHERE numero = ?"
+            );
+            ps.setInt(1, candidatoNumero);
+            ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    private void deletarEleitoresDeCandidato(Integer candidatoNumero) {
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "DELETE FROM eleitor WHERE id_candidato = (SELECT id_candidato FROM candidato WHERE numero = ?)"
+            );
+            ps.setInt(1, candidatoNumero);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public List<Candidato> findAll() { //OK
@@ -151,7 +167,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
                 Long votos = rs.getLong("votos_totais");
                 candidatos.add(new Candidato(nome, partido, numero, foto, votos));
             }
-
+            stmt.close();
             return candidatos;
 
         } catch (SQLException e) {
@@ -160,8 +176,8 @@ public class CandidatoDao implements CandidatoDaoInterface {
         }
     }
 
-    public void incrementarVoto(Integer numeroCandidato){
-        try{
+    public void incrementarVoto(Integer numeroCandidato) {
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "UPDATE candidato SET votos_totais = votos_totais + 1 WHERE numero = ?"
             );
@@ -169,75 +185,74 @@ public class CandidatoDao implements CandidatoDaoInterface {
             ps.executeUpdate();
             ps.close();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.err.println("Erro ao adicionar voto no candidato");
             e.printStackTrace();
         }
     }
 
-    public void alterarNomeDeCandidato(Integer numero, String nome){
-        try{
+    public void alterarNomeDeCandidato(Integer numero, String nome) {
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
-                    "ALTER candidato SET nome = ? WHERE numero = ?"
+                    "UPDATE candidato SET nome = ? WHERE numero = ?"
             );
             ps.setString(1, nome);
             ps.setInt(2, numero);
             ps.executeUpdate();
             ps.close();
-        }catch (SQLException e){
+
+        } catch (SQLException e) {
             System.err.println("erro ao alterar nome do candidato");
             e.printStackTrace();
         }
     }
 
-    public void alterarNumeroDeCandidato(Integer numeroAntigo, Integer numeroNovo){
-        try{
+    public void alterarNumeroDeCandidato(Integer numeroAntigo, Integer numeroNovo) {
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
-                    "ALTER candidato SET numero = ? WHERE numero = ?"
+                    "UPDATE candidato SET numero = ? WHERE numero = ?"
             );
             ps.setInt(1, numeroNovo);
             ps.setInt(2, numeroAntigo);
             ps.executeUpdate();
             ps.close();
-        }catch (SQLException e){
+
+        } catch (SQLException e) {
             System.err.println("Erro ao alterar numero de candidato");
             e.printStackTrace();
         }
     }
 
-    public void alterarPartidoDeCandidato(Integer numero, String partido){
-        try{
+    public void alterarPartidoDeCandidato(Integer numero, String partido) {
+        try {
             PreparedStatement ps = this.connection.prepareStatement(
-                    "ALTER candidato SET partido = ? WHERE numero = ?"
+                    "UPDATE candidato SET id_partido = (SELECT id_partido FROM partido WHERE sigla = ?) WHERE numero = ?"
             );
             ps.setString(1, partido);
             ps.setInt(2, numero);
             ps.executeUpdate();
             ps.close();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.err.println("Erro ao alterar partido de candidato");
             e.printStackTrace();
         }
     }
 
+    public void alterarFotoDeCandidato(Integer numero, byte[] fotoBytes){
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE candidato SET foto = ? WHERE numero = ?"
+            );
+            ps.setBytes(1, fotoBytes);
+            ps.setInt(2, numero);
+            ps.executeUpdate();
+            ps.close();
 
-
-    public static void main(String[] args) {
-        Connection c = DB.getConnection();
-
-        //inserir
-//        new CandidatoDao(c).insert(new Candidato("PEDROs", "PT", 14, "fotos/justica_eleitoral.jpg"));
-
-        //alterar
-//        Candidato candidato = new Candidato("CARLINHOS", "PT", 14, "fotos/justica_eleitoral.jpg");
-//        new CandidatoDao(c).updateById(11, candidato);
-
-        //findall
-//        List<Candidato> candidatos = new CandidatoDao(c).findAll();
-//        candidatos.forEach(System.out::println);
-
-        //deletar
-//        new CandidatoDao(c).deleteById(11);
+        }catch (SQLException e){
+            System.err.println("Erro ao alterar foto");
+        }
     }
+
+
 }

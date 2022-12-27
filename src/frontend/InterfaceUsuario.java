@@ -6,6 +6,10 @@ import utilidade.AudioPlayer;
 import utilidade.InterfaceUsuarioUtil;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 
@@ -73,8 +77,8 @@ public class InterfaceUsuario {
         return cpf;
     }
 
-    public Integer exibirEntradaParaVoto() {
-        String listaDeCandidatos = "LISTA DE CANDIDATOS:\n" + candidatoService.getlistaDeCandidatos() + "\n DIGITE SEU VOTO";
+    public Integer exibirEntradaParaVoto(String msg) {
+        String listaDeCandidatos = "LISTA DE CANDIDATOS:\n" + candidatoService.getlistaDeCandidatos() + "\n" + msg;
         Integer voto = Integer.valueOf(JOptionPane.showInputDialog(null, listaDeCandidatos));
         AudioPlayer.tocarSom(AudioPlayer.confirma);
         return voto;
@@ -111,11 +115,11 @@ public class InterfaceUsuario {
         return n;
     }
 
-    public Integer exibirAlterarDados(){
+    public Integer exibirAlterarDados() {
         Integer n = JOptionPane.showOptionDialog(
                 null,
-                "Tela de alteração de dados\n" +
-                        "Selecione o que deseja alterar.",
+                "OPERAÇÕES AVANÇADAS\n" +
+                        "Selecione quem deseja Modificar",
                 "Aviso",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
@@ -127,7 +131,41 @@ public class InterfaceUsuario {
         return n;
     }
 
-    public void exibirOpcoesDeAlteracaoDeCandidato(){
-
+    public Integer exibirOpcoesDeAlteracaoDeCandidato() {
+        Integer n = JOptionPane.showOptionDialog(
+                null,
+                "Selecione o que deseja alterar" +
+                        "",
+                "Aviso",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"ALTERAR NOME", "ALTERAR PARTIDO", "ALTERAR NUMERO", "ALTERAR FOTO", "DELETAR", "ADICIONAR", "Voltar"},
+                null
+        );
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
     }
+
+    public String exibirEntradaDeTexto(String texto) {
+        return JOptionPane.showInputDialog(null, texto);
+    }
+
+    public Integer exibirEntradaDeNumero(String texto) {
+        Integer n = Integer.parseInt(JOptionPane.showInputDialog(null, texto));
+        System.out.println(n);
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
+    }
+
+    public String exibirSelecionarArquivo() throws MalformedURLException {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Arquivos JPG", "jpg"));
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+
 }

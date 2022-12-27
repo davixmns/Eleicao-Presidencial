@@ -3,6 +3,7 @@ package service;
 import dao.CandidatoDao;
 import entidades.Candidato;
 import utilidade.CandidatoUtil;
+import utilidade.InterfaceUsuarioUtil;
 import utilidade.PartidoUtil;
 
 import java.util.Collections;
@@ -77,19 +78,30 @@ public class CandidatoService {
         }
     }
 
-    public void alterarNumeroDeCandidato(Integer numeroNovo, Integer numeroAntigo){
-        if(!candidatoUtil.numeroDoCandidatoExiste(numeroNovo)){
+    public void alterarNumeroDeCandidato(Integer numeroNovo, Integer numeroAntigo) {
+        if (!candidatoUtil.numeroDoCandidatoExiste(numeroNovo)) {
+            System.out.println("numero nao existe");
             this.candidatoDao.alterarNumeroDeCandidato(numeroAntigo, numeroNovo);
-        } else{
+        } else {
+            System.out.println("numero existe");
             throw new ServiceException("Numero de candidato ja foi cadastrado");
         }
     }
 
-    public void alterarPartidoDeCandidato(Integer numero, String partido){
-        if(candidatoUtil.partidoExiste(partido)){
+    public void alterarPartidoDeCandidato(Integer numero, String partido) {
+        if (candidatoUtil.partidoExiste(partido)) {
             this.candidatoDao.alterarPartidoDeCandidato(numero, partido);
         } else {
             throw new ServiceException("Partido não cadastrado no banco de dados");
+        }
+    }
+
+    public void alterarFotoDeCandidato(Integer numero, String fotoURL) {
+        if(candidatoUtil.numeroDoCandidatoExiste(numero)) {
+            byte[] fotoBytes = InterfaceUsuarioUtil.converterImagemParaBytes(fotoURL);
+            this.candidatoDao.alterarFotoDeCandidato(numero, fotoBytes);
+        } else{
+            throw new ServiceException("Numero do candidato não existe");
         }
     }
 }

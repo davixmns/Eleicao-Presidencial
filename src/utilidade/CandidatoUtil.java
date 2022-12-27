@@ -33,8 +33,9 @@ public class CandidatoUtil {
 
     public boolean numeroDoCandidatoExiste(Integer numero){
         List<Candidato> candidatos = candidatoDao.findAll();
-
-        return candidatos.stream().anyMatch(c -> c.getNumero() == numero);
+        boolean b = candidatos.stream().anyMatch(c -> c.getNumero() == numero);
+        System.out.println(b);
+        return b;
     }
 
 }
