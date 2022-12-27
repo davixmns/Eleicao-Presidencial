@@ -21,9 +21,13 @@ public class EleitorService {
     public void inserirEleitor(Eleitor eleitor) {
         if (eleitorUtil.cpfValido(eleitor.getCpf())) {
             if (!eleitorUtil.votoNulo(eleitor.getCandidatoNumero())) {
-                if(eleitorUtil.nomeValido(eleitor.getNome())){
-                    this.eleitorDao.insert(eleitor);
-                    this.candidatoDao.incrementarVoto(eleitor.getCandidatoNumero());
+                if (eleitorUtil.nomeValido(eleitor.getNome())) {
+                    if (!eleitorDao.contemEleitor(eleitor.getCpf())) {
+                        this.eleitorDao.insert(eleitor);
+                        this.candidatoDao.incrementarVoto(eleitor.getCandidatoNumero());
+                    } else {
+                        throw new ServiceException("Este CPF ja foi cadastrado no banco de dados");
+                    }
                 } else {
                     throw new ServiceException("NOME INVÁLIDO");
                 }
@@ -33,17 +37,37 @@ public class EleitorService {
         }
     }
 
-    public void deletarEleitor(Integer eleitorID){
+    public void deletarEleitor(Integer eleitorID) {
         this.eleitorDao.deleteById(eleitorID);
     }
 
-    public Eleitor getEleitor(Integer eleitorID){
+    public Eleitor getEleitor(Integer eleitorID) {
         return this.eleitorDao.findById(eleitorID);
     }
 
-    public List<Eleitor> getEleitores(){
+    public List<Eleitor> getEleitores() {
         return this.eleitorDao.findAll();
     }
 
+    public void alterarNomeDeEleitor(Integer eleitorID, String novoNome) {
+        if (this.eleitorUtil.nomeValido(novoNome)) {
+            this.eleitorDao.alterarNome(eleitorID, novoNome);
+        } else {
+            throw new ServiceException("Nome invalido");
+        }
+    }
+
+    public void alterarCpfDeEleitor(Integer eleitorID, Long novoCpf) {
+        if (this.eleitorUtil.cpfValido(novoCpf)) {
+            this.eleitorDao.alterarCPF(eleitorID, novoCpf);
+        } else {
+            throw new ServiceException("CPF invalido");
+        }
+    }
+
+    public void deletarTodosOsEleitores(){
+        eleitorDao.deletarEleitores();
+        candidatoDao.zerarTodosOsVotos();
+    }
 
 }

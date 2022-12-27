@@ -29,4 +29,14 @@ public class PartidoUtil {
         return partidos.stream().anyMatch(p -> p.getSigla().equals(sigla));
     }
 
+    public String getListaDePartidos(){
+        List<Partido> partidos = partidoDao.findAll();
+        StringBuilder sb =new StringBuilder();
+
+        for (Partido p : partidos) {
+            sb.append(p.getSigla()).append(" - ").append(p.getNome()).append("\n");
+        }
+        return sb.toString();
+    }
+
 }

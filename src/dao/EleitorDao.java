@@ -57,11 +57,13 @@ public class EleitorDao implements EleitorDaoInterface {
     @Override
     public void deleteById(Integer eleitorID) {
         try{
+            removerVoto(eleitorID);
             PreparedStatement st = this.connection.prepareStatement(
                     "DELETE FROM eleitor WHERE id_eleitor = ?"
             );
             st.setInt(1, eleitorID);
             st.executeUpdate();
+            st.close();
 
         } catch (SQLException e){
             System.err.println("Erro ao deletar eleitor");
@@ -139,14 +141,84 @@ public class EleitorDao implements EleitorDaoInterface {
         }
     }
 
+    public void removerVoto(Integer eleitorID){
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE candidato SET votos_totais = votos_totais - 1\n" +
+                            "WHERE id_candidato = (SELECT id_candidato FROM eleitor WHERE id_eleitor = ?)"
+            );
+            ps.setInt(1, eleitorID);
+            ps.executeUpdate();
+            ps.close();
 
-
-    public static void main(String[] args) {
-        Connection c = DB.getConnection();
-        EleitorDao eleitorDao = new EleitorDao(c);
-
-        Eleitor eleitor = eleitorDao.findById(3);
-
-        System.out.println(eleitor);
+        }catch (SQLException e){
+            System.err.println("Erro ao remover voto de eleitor");
+            e.printStackTrace();
+        }
     }
+
+    public void alterarNome(Integer eleitorID, String novoNome){
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE eleitor SET nome = ?\n" +
+                            "WHERE id_eleitor = ?"
+            );
+            ps.setString(1, novoNome);
+            ps.setInt(2, eleitorID);
+            ps.executeUpdate();
+            ps.close();
+
+        }catch (SQLException e){
+            System.err.println("Erro ao alterar nome de eleitor");
+            e.printStackTrace();
+        }
+    }
+
+    public void alterarCPF(Integer eleitorID, Long novoCPF){
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE eleitor SET cpf = ?\n" +
+                            "WHERE id_eleitor = ?"
+            );
+            ps.setLong(1, novoCPF);
+            ps.setInt(2, eleitorID);
+            ps.executeUpdate();
+            ps.close();
+
+        }catch (SQLException e){
+            System.err.println("Erro ao alterarCPF de eleitor");
+        }
+    }
+
+    public boolean contemEleitor(Long cpf) {
+        Connection conn = DB.getConnection();
+
+        String sql = "SELECT COUNT(*) FROM eleitor WHERE cpf = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao verificar se existe cpf");
+        }
+        return false;
+    }
+
+    public void deletarEleitores(){
+        try{
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "DELETE FROM eleitor"
+            );
+            ps.executeUpdate();
+            ps.close();
+
+        }catch (SQLException e){
+            System.err.println("erro ao deletar eleitores");
+            e.printStackTrace();
+        }
+    }
+
 }

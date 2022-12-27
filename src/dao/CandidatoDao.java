@@ -1,5 +1,6 @@
 package dao;
 
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import dao.interfaces.CandidatoDaoInterface;
 import entidades.Candidato;
 import utilidade.InterfaceUsuarioUtil;
@@ -17,32 +18,26 @@ public class CandidatoDao implements CandidatoDaoInterface {
     }
 
     @Override
-    public void insert(Candidato candidato) { //OK
-        try {
-            PreparedStatement stmt = connection.prepareStatement(
-                    "SELECT id_partido FROM partido WHERE sigla = ?"
-            );
-            stmt.setString(1, candidato.getPartido());
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            int idPartido = rs.getInt("id_partido");
-            stmt = connection.prepareStatement(
-                    "INSERT INTO candidato(id_partido, nome, numero, foto, votos_totais)" +
-                            "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
-            );
-            stmt.setInt(1, idPartido);
-            stmt.setString(2, candidato.getNome());
-            stmt.setInt(3, candidato.getNumero());
-            stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
-            stmt.setInt(5, 0);
-            stmt.executeUpdate();
-            System.out.println(stmt.getGeneratedKeys() + " rows added");
-            stmt.close();
-
-        } catch (SQLException e) {
-            System.err.println("erro ao inserir candidato");
-            e.printStackTrace();
-        }
+    public void insert(Candidato candidato) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT id_partido FROM partido WHERE sigla = ?"
+        );
+        stmt.setString(1, candidato.getPartido());
+        ResultSet rs = stmt.executeQuery();
+        rs.next();
+        int idPartido = rs.getInt("id_partido");
+        stmt = connection.prepareStatement(
+                "INSERT INTO candidato(id_partido, nome, numero, foto, votos_totais)" +
+                        "VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS
+        );
+        stmt.setInt(1, idPartido);
+        stmt.setString(2, candidato.getNome());
+        stmt.setInt(3, candidato.getNumero());
+        stmt.setBytes(4, InterfaceUsuarioUtil.converterImagemParaBytes(candidato.getFotoURL()));
+        stmt.setInt(5, 0);
+        stmt.executeUpdate();
+        System.out.println(stmt.getGeneratedKeys() + " rows added");
+        stmt.close();
     }
 
     @Override
@@ -132,7 +127,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
         }
     }
 
-    private void deletarEleitoresDeCandidato(Integer candidatoNumero) {
+    public void deletarEleitoresDeCandidato(Integer candidatoNumero) {
         try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "DELETE FROM eleitor WHERE id_candidato = (SELECT id_candidato FROM candidato WHERE numero = ?)"
@@ -239,7 +234,7 @@ public class CandidatoDao implements CandidatoDaoInterface {
         }
     }
 
-    public void alterarFotoDeCandidato(Integer numero, byte[] fotoBytes){
+    public void alterarFotoDeCandidato(Integer numero, byte[] fotoBytes) {
         try {
             PreparedStatement ps = this.connection.prepareStatement(
                     "UPDATE candidato SET foto = ? WHERE numero = ?"
@@ -249,10 +244,23 @@ public class CandidatoDao implements CandidatoDaoInterface {
             ps.executeUpdate();
             ps.close();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.err.println("Erro ao alterar foto");
         }
     }
 
+    public void zerarTodosOsVotos(){
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(
+                    "UPDATE candidato SET votos_totais = ?"
+            );
+            ps.setInt(1, 0);
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao zerar votos");
+        }
+    }
 
 }

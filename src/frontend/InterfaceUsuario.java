@@ -7,9 +7,7 @@ import utilidade.InterfaceUsuarioUtil;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 
@@ -71,8 +69,8 @@ public class InterfaceUsuario {
         return nome;
     }
 
-    public Long exibirEntradaParaCPF() {
-        Long cpf = Long.valueOf(JOptionPane.showInputDialog(null, "DIGITE SEU CPF"));
+    public Long exibirEntradaParaLong(String msg) {
+        Long cpf = Long.valueOf(JOptionPane.showInputDialog(null, msg));
         AudioPlayer.tocarSom(AudioPlayer.confirma);
         return cpf;
     }
@@ -124,19 +122,19 @@ public class InterfaceUsuario {
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null,
-                new String[]{"CANDIDATO", "ELEITOR", "PARTIDO", "Voltar"},
+                new String[]{"CANDIDATO", "ELEITOR", "PARTIDO", "ZERAR", "Voltar"},
                 null
         );
         AudioPlayer.tocarSom(AudioPlayer.confirma);
         return n;
     }
 
-    public Integer exibirOpcoesDeAlteracaoDeCandidato() {
+    public Integer exibirOpcoesDeModificacaoDeCandidato() {
         Integer n = JOptionPane.showOptionDialog(
                 null,
-                "Selecione o que deseja alterar" +
+                "Opcões avançadas de Candidatos" +
                         "",
-                "Aviso",
+                "Mais",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.INFORMATION_MESSAGE,
                 null,
@@ -147,7 +145,37 @@ public class InterfaceUsuario {
         return n;
     }
 
-    public String exibirEntradaDeTexto(String texto) {
+    public Integer exibirOpcoesDeModificacaoDeEleitor(){
+        Integer n = JOptionPane.showOptionDialog(
+                null,
+                "Opções avançadas de eleitores",
+                "Mais",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"ALTERAR NOME", "ALTERAR CPF", "DELETAR", "Voltar"},
+                null
+        );
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
+    }
+
+    public Integer exibirOpcoesDeModificacaoDePartido(){
+        Integer n = JOptionPane.showOptionDialog(
+                null,
+                "Opções avançadas de partidos",
+                "Mais",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                new String[]{"ALTERAR SIGLA", "ALTERAR NOME", "ADICIONAR", "DELETAR", "Voltar"},
+                null
+        );
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
+    }
+
+    public String exibirEntradaParaString(String texto) {
         return JOptionPane.showInputDialog(null, texto);
     }
 
@@ -166,6 +194,10 @@ public class InterfaceUsuario {
             return fileChooser.getSelectedFile().getAbsolutePath();
         }
         return null;
+    }
+
+    public Integer exibirPedidoDeConfirmacao(String msg){
+        return JOptionPane.showConfirmDialog(null, msg, "Zerar urna", JOptionPane.YES_NO_OPTION);
     }
 
 }

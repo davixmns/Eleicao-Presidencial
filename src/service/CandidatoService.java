@@ -6,6 +6,7 @@ import utilidade.CandidatoUtil;
 import utilidade.InterfaceUsuarioUtil;
 import utilidade.PartidoUtil;
 
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -26,7 +27,11 @@ public class CandidatoService {
             if (!candidatoUtil.numeroDoCandidatoExiste(candidato.getNumero())) {
                 System.out.println("sim");
                 if (partidoUtil.partidoExiste(candidato.getPartido())) {
-                    this.candidatoDao.insert(candidato);
+                    try {
+                        this.candidatoDao.insert(candidato);
+                    }catch (SQLException e){
+                        throw new ServiceException(e.getMessage());
+                    }
                 } else {
                     throw new ServiceException("Partido não existe no banco de dados");
                 }
