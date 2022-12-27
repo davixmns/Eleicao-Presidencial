@@ -37,7 +37,7 @@ public class App {
         InterfaceUsuario interfaceUsuario = new InterfaceUsuario(candidatoService);
 
         boolean chave = true;
-        boolean chave3 = true;
+        boolean chave3;
         while (chave) {
             Integer opcaoEscolhida = interfaceUsuario.exibirMenu();
 
