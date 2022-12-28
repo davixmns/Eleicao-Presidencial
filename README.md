@@ -18,9 +18,9 @@ será exibida, após digitar o número desejado aparecerá uma tela de confirma�
 mostradas para a confirmação voto, assim como na urna real é possível alterar o voto durante a execução. 
 Votos nulos ou diferentes não são computados.<br><br>
 <img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1050190809577836655/Screenshot_5.png">
-<img align="center" alt="image2" height="290" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057458466672885790/Screenshot_9.png">
-<img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687543164949/Screenshot_3.png">
-<img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687878717510/Screenshot_4.png">
+<img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057458466672885790/Screenshot_9.png">
+<img align="center" alt="image2" height="270" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687543164949/Screenshot_3.png">
+<img align="center" alt="image2" height="340" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687878717510/Screenshot_4.png">
 <img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688184893460/Screenshot_5.png">
 
 
