@@ -8,6 +8,7 @@ banco de dados relacional MySQL<br><br><br>
 <h2>Detalhes do projeto 💭️ </h2>
 Esse projeto simula uma urna eletrônica real em uma votação para presidente. Na tela principal 
 o usuário pode escolher:
+<br>
 
 <h2>Diagrama EER</h2>
 <img align="center" alt="image2" height="400" width="480" src="https://cdn.discordapp.com/attachments/785634513966333953/1057441543486701698/diagrama.png">
