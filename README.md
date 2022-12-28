@@ -40,12 +40,10 @@ Esta seção tem outras operações possíveis para se realizar no banco de dado
 <img align="center" alt="image2" height="150" width="750" src="https://cdn.discordapp.com/attachments/785634513966333953/1057463320921243748/Screenshot_11.png">
 <img align="center" alt="image2" height="150" width="690" src="https://cdn.discordapp.com/attachments/785634513966333953/1057463321244213298/Screenshot_10.png">
 <br>
-<br>
+
 <h3>SAIR:</h3>
 A execução do programa é terminada<br> 
-
-
-
+<br>
 <h2>Como usar 🤔</h2>
 
 |  **Objetivo** |                                            **Onde** |
