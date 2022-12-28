@@ -63,12 +63,6 @@ public class InterfaceUsuario {
         return n;
     }
 
-    public String exibirEntradaParaNome() {
-        String nome = JOptionPane.showInputDialog(null, "DIGITE SEU NOME");
-        AudioPlayer.tocarSom(AudioPlayer.confirma);
-        return nome;
-    }
-
     public Long exibirEntradaParaLong(String msg) {
         Long cpf = Long.valueOf(JOptionPane.showInputDialog(null, msg));
         AudioPlayer.tocarSom(AudioPlayer.confirma);
@@ -176,7 +170,9 @@ public class InterfaceUsuario {
     }
 
     public String exibirEntradaParaString(String texto) {
-        return JOptionPane.showInputDialog(null, texto);
+        String msg = JOptionPane.showInputDialog(null, texto);
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return msg;
     }
 
     public Integer exibirEntradaDeNumero(String texto) {
@@ -190,6 +186,7 @@ public class InterfaceUsuario {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Arquivos JPG", "jpg"));
         int result = fileChooser.showOpenDialog(null);
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
         if (result == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile().getAbsolutePath();
         }
@@ -197,7 +194,9 @@ public class InterfaceUsuario {
     }
 
     public Integer exibirPedidoDeConfirmacao(String msg){
-        return JOptionPane.showConfirmDialog(null, msg, "Zerar urna", JOptionPane.YES_NO_OPTION);
+        Integer n = JOptionPane.showConfirmDialog(null, msg, "Zerar urna", JOptionPane.YES_NO_OPTION);
+        AudioPlayer.tocarSom(AudioPlayer.confirma);
+        return n;
     }
 
 }
