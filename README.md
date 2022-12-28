@@ -22,22 +22,26 @@ Votos nulos ou diferentes não são computados.<br><br>
 <img align="center" alt="image2" height="270" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687543164949/Screenshot_3.png">
 <img align="center" alt="image2" height="340" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457687878717510/Screenshot_4.png">
 <img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688184893460/Screenshot_5.png">
-
+<br>
+<br>
 
 <h3>RESULTADO:</h3>
 Votos gravados serão contados e uma lista ordenada com todos os candidatos
 e seu número de votos é exibida.<br>
 <img align="center" alt="image2" height="200" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688524627978/Screenshot_6.png">
-
+<br>
+<br>
 <h3>MAIS:</h3> 
 Esta seção tem outras operações possíveis para se realizar no banco de dados<br>
 <img align="center" alt="image2" height="150" width="500" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688868565073/Screenshot_7.png">
 <img align="center" alt="image2" height="150" width="790" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457689195716628/Screenshot_8.png">
 <img align="center" alt="image2" height="150" width="750" src="https://cdn.discordapp.com/attachments/785634513966333953/1057463320921243748/Screenshot_11.png">
 <img align="center" alt="image2" height="150" width="690" src="https://cdn.discordapp.com/attachments/785634513966333953/1057463321244213298/Screenshot_10.png">
+<br>
+<br>
 <h3>SAIR:</h3>
 A execução do programa é terminada<br> 
-<br><br>
+
 
 
 <h2>Como usar 🤔</h2>
