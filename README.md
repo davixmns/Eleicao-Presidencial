@@ -27,7 +27,7 @@ Votos nulos ou diferentes não são computados.<br><br>
 <h3>RESULTADO:</h3>
 Votos gravados serão contados e uma lista ordenada com todos os candidatos
 e seu número de votos é exibida.<br>
-<img align="center" alt="image2" height="290" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688524627978/Screenshot_6.png">
+<img align="center" alt="image2" height="290" width="460" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688524627978/Screenshot_6.png">
 
 <h3>MAIS:</h3> 
 Esta seção tem outras operações possíveis para se realizar no banco de dados
