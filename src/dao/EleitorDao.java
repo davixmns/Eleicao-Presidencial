@@ -30,6 +30,8 @@ public class EleitorDao implements EleitorDaoInterface {
             ps.setLong(2, eleitor.getCpf());
             ps.setInt(3, eleitor.getCandidatoNumero());
             ps.executeUpdate();
+            ps.close();
+
         } catch (SQLException e) {
             throw new DBException(e.getMessage());
         }
@@ -47,6 +49,7 @@ public class EleitorDao implements EleitorDaoInterface {
             ps.setLong(3, eleitor.getCpf());
             ps.setInt(4, eleitorId);
             ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,6 +91,8 @@ public class EleitorDao implements EleitorDaoInterface {
                 Integer numeroCandidato = rs.getInt("numero");
                 String nome = rs.getString("nome");
                 Long cpf = rs.getLong("cpf");
+                rs.close();
+                ps.close();
                 return new Eleitor(nome, cpf, numeroCandidato);
 
             } else {
@@ -117,6 +122,8 @@ public class EleitorDao implements EleitorDaoInterface {
                 Integer numeroDoCandidato = rs.getInt("numero");
                 eleitores.add(new Eleitor(nome, cpf, numeroDoCandidato));
             }
+            ps.close();
+            rs.close();
             return eleitores;
 
         } catch (SQLException e) {
@@ -132,6 +139,7 @@ public class EleitorDao implements EleitorDaoInterface {
             );
             ps.setInt(1, numeroDoCandidato);
             int rowsAffected = ps.executeUpdate();
+            ps.close();
             if (rowsAffected == 0) {
                 throw new DBException("Candidato não encontrado");
             }
@@ -201,6 +209,9 @@ public class EleitorDao implements EleitorDaoInterface {
                 int count = rs.getInt(1);
                 return count > 0;
             }
+            rs.close();
+            stmt.close();
+
         } catch (SQLException e) {
             System.err.println("Erro ao verificar se existe cpf");
         }

@@ -3,7 +3,6 @@ package dao;
 import dao.interfaces.PartidoDaoInterface;
 import db.DBException;
 import entidades.Partido;
-import service.ServiceException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +27,7 @@ public class PartidoDao implements PartidoDaoInterface {
             stmt.setString(1, p.getSigla());
             stmt.setString(2, p.getNome());
             stmt.executeUpdate();
+            stmt.close();
 
         } catch (SQLException e) {
             System.err.println("erro ao inserir partido no banco");
@@ -47,6 +47,8 @@ public class PartidoDao implements PartidoDaoInterface {
             if (rs.next()) {
                 String sigla = rs.getString("sigla");
                 String nome = rs.getString("nome");
+                rs.close();
+                ps.close();
                 return new Partido(nome, sigla);
 
             } else {
@@ -67,6 +69,7 @@ public class PartidoDao implements PartidoDaoInterface {
             );
             ps.setInt(1, partidoID);
             ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException e) {
             System.err.println("Erro ao deletar partido");
@@ -87,6 +90,7 @@ public class PartidoDao implements PartidoDaoInterface {
             ps.setString(2, p.getNome());
             ps.setInt(3, partidoID);
             ps.executeUpdate();
+            ps.close();
 
         } catch (SQLException e) {
             System.err.println("Erro ao editar partido");
