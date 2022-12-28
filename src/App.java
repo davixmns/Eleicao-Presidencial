@@ -43,8 +43,8 @@ public class App {
 
             if (opcaoEscolhida == 0) {
                 try {
-                    String nome = interfaceUsuario.exibirEntradaParaNome();
-                    Long cpf = interfaceUsuario.exibirEntradaParaLong("Digite seu CPF");
+                    String nome = interfaceUsuario.exibirEntradaParaString("DIGITE SEU NOME");
+                    Long cpf = interfaceUsuario.exibirEntradaParaLong("DIGITE SEU CPF");
                     Integer voto = null;
                     boolean confirmado = false;
                     while (!confirmado) {

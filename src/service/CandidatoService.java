@@ -55,7 +55,9 @@ public class CandidatoService {
         List<Candidato> candidatos = candidatoDao.findAll();
         StringBuilder sb = new StringBuilder();
         for (Candidato c : candidatos) {
-            sb.append(c.getNumero()).append(" - ").append(c.getNome()).append(" - ").append(c.getPartido()).append('\n');
+            sb.append(c.getNumero()).append(" - ")
+                    .append(c.getNome()).append(" - ")
+                    .append(c.getPartido()).append('\n');
         }
         return sb.toString();
     }
@@ -65,8 +67,12 @@ public class CandidatoService {
         candidatos.sort(Comparator.comparing(Candidato::getVotos));
         Collections.reverse(candidatos);
         StringBuilder sb = new StringBuilder();
-        for (Candidato c : candidatos) {
-            sb.append(c.getVotos()).append(" votos - ").append(c.getNome()).append(" ").append(c.getPartido()).append('\n');
+        for (int i = 0; i < candidatos.size(); i++) {
+            Candidato c = candidatos.get(i);
+            Integer ordem = i + 1;
+            sb.append(ordem).append("°: ").append(c.getNome()).
+                    append(" - ").append(c.getPartido()).append(" - ").
+                    append(c.getVotos()).append(" votos\n");
         }
         return sb.toString();
     }
