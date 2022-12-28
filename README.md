@@ -31,7 +31,7 @@ e seu número de votos é exibida.<br>
 
 <h3>MAIS:</h3> 
 Esta seção tem outras operações possíveis para se realizar no banco de dados<br>
-<img align="center" alt="image2" height="100" width="400" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688868565073/Screenshot_7.png">
+<img align="center" alt="image2" height="150" width="450" src="https://cdn.discordapp.com/attachments/785634513966333953/1057457688868565073/Screenshot_7.png">
 
 
 <h3>SAIR:</h3>
