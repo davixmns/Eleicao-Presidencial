@@ -113,7 +113,7 @@ public class App {
                                 interfaceUsuario.exibirFIM();
 
                             } else if (oqueAlterar == 5) { //adicionar candidato
-                                String nome = interfaceUsuario.exibirEntradaParaString("Digite o nome do novo candidato");
+                                String nome = interfaceUsuario.exibirEntradaParaString(candidatoService.getlistaDeCandidatos() + "Digite o nome do novo candidato");
                                 String partido = interfaceUsuario.exibirEntradaParaString(partidoUtil.getListaDePartidos() + "\nDigite o partido do novo candidato");
                                 Integer numero = interfaceUsuario.exibirEntradaDeNumero(candidatoService.getlistaDeCandidatos() + "Digite o numero do novo candidato");
                                 String fotoURL = interfaceUsuario.exibirSelecionarArquivo();
@@ -172,7 +172,7 @@ public class App {
 
 
                             } else if(oqueAlterar == 2) { //adicionar
-                                String sigla = interfaceUsuario.exibirEntradaParaString("Digite a sigla do novo partido");
+                                String sigla = interfaceUsuario.exibirEntradaParaString(partidoUtil.getListaDePartidos() + "\nDigite a sigla do novo partido");
                                 String nome = interfaceUsuario.exibirEntradaParaString("Digite o nome do novo partido");
                                 Partido p = new Partido(nome, sigla);
                                 partidoService.inserirPartido(p);

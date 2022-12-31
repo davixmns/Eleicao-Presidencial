@@ -23,10 +23,10 @@ public class PartidoService {
             if (!partidoUtil.partidoExiste(p.getSigla())) {
                 partidoDao.insert(p);
             } else {
-                System.err.println("Partido ja existe");
+                throw new ServiceException("Partido ja existe");
             }
         } else {
-            System.err.println("Nome ou sigla invalidos");
+            throw new ServiceException("Nome ou sigla invalidos");
         }
     }
 
